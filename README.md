@@ -43,7 +43,7 @@ The steps are the following:
 7) You can skip steps *3.Configure Instance*, *4.Add Storage*, *5.Add Tags*, and go straight to *6. Configure Security Group*. Now you can configure which IP address can access the instance. If you're going to SSH into the instance then choose Type = SSH and you can use your own IP address. Your IP address can change when you use a different router, so you might have to reconfigure the IP address again. If you want to use Jupyter Notebook on the instance you also need to open port 8888. Right now you can choose all IP address as you don't know the IP address just yet. Once you start the Jupyter Notebook and know the IP address, you should update the security group.
 
 <p align="center">
-  <img src="https://github.com/AleKosc/Use-AWS-EC2-and-Docker-for-Machine-Learning/blob/master/Images/instance4.1_security_group.PNG">
+  <img src="https://github.com/AleKosc/Use-AWS-EC2-and-Docker-for-Machine-Learning/blob/master/Images/instance4.1_security_group.png">
 </p>
 
 8) Then choose the security key pair that you downloaded previously. 
@@ -58,7 +58,9 @@ The steps are the following:
   <img src="https://github.com/AleKosc/Use-AWS-EC2-and-Docker-for-Machine-Learning/blob/master/Images/instance5.PNG">
 </p>
 
-10) Connect to the instance via SSH. Open up the Shell or PowerShell.
+10) Connect to the instance via SSH. Open up the Shell or PowerShell and type in: **ssh -i /path_to_key/my_key.pem user_name@public_dns_name**. In Powershell you'll have to use "\" instead of "/". The public_dns_name becomes available when you launch an instance.
+
+Example: **ssh -i /C:/Users/.../Desktop/GitHub/AWS_and_Docker/ec2_docker.pem ubuntu@ec2-7-5-163-17.eu-west-2.compute.amazonaws.com**
 
 # Install Environment and ML Libraries using Docker
 
