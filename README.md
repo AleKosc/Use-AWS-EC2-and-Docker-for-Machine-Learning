@@ -64,6 +64,93 @@ Example: **ssh -i /C:/Users/.../Desktop/GitHub/AWS_and_Docker/ec2_docker.pem ubu
 
 # Install Environment and ML Libraries using Docker
 
-The steps are the following:
-1) Install Docker on the instance
-2) Import a container "containing" MiniConda and essential ML libraries
+Now that you're logged in you can download and install Docker on your instance and then import a pre-configured container. I will import one that comes with MiniConda and some essential ML libraries.
+
+## Install Docker on the instance
+
+### 1) Set Up the repository
+
+1.1) Update the apt package index:
+
+      $ sudo apt-get update
+
+1.2) Install packages to allow apt to use a repository over HTTPS:
+
+      $ sudo apt-get install \
+          apt-transport-https \
+          ca-certificates \
+          curl \
+          software-properties-common
+
+1.3) Add Docker’s official GPG key:
+
+      $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+1.4) Verify that you now have the key with the fingerprint 9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88, by searching for the last 8 characters of the fingerprint.
+
+      $ sudo apt-key fingerprint 0EBFCD88
+
+      pub   4096R/0EBFCD88 2017-02-22
+            Key fingerprint = 9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+      uid                  Docker Release (CE deb) <docker@docker.com>
+      sub   4096R/F273FCD8 2017-02-22
+
+1.5) Use the following command to set up the stable repository. You always need the stable repository, even if you want to install builds from the edge or test repositories as well. To add the edge or test repository, add the word edge or test (or both) after the word stable in the commands below.
+
+      $ sudo add-apt-repository \
+         "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+         $(lsb_release -cs) \
+         stable"
+
+### 2) Install Docker CE
+
+2.1) Update the apt package index.
+
+      $ sudo apt-get update
+
+2.2) Install the latest version of Docker CE, or go to the next step to install a specific version:
+
+      $ sudo apt-get install docker-ce
+
+2.3) Verify that Docker CE is installed correctly by running the hello-world image.
+
+      $ sudo docker container run hello-world
+
+### 3) Import a container "containing" MiniConda and essential ML libraries
+
+3.1) This command pulls the jupyter/scipy-notebook image tagged 2c80cf3537ca from Docker Hub 
+
+      docker run -p 8888:8888 jupyter/scipy-notebook:2c80cf3537ca
+
+Executing the command: jupyter notebook
+[I 15:33:00.567 NotebookApp] Writing notebook server cookie secret to /home/jovyan/.local/share/jupyter/runtime/notebook_cookie_secret
+[W 15:33:01.084 NotebookApp] WARNING: The notebook server is listening on all IP addresses and not using encryption. This is not recommended.
+[I 15:33:01.150 NotebookApp] JupyterLab alpha preview extension loaded from /opt/conda/lib/python3.6/site-packages/jupyterlab
+[I 15:33:01.150 NotebookApp] JupyterLab application directory is /opt/conda/share/jupyter/lab
+[I 15:33:01.155 NotebookApp] Serving notebooks from local directory: /home/jovyan
+[I 15:33:01.156 NotebookApp] 0 active kernels
+[I 15:33:01.156 NotebookApp] The Jupyter Notebook is running at:
+[I 15:33:01.157 NotebookApp] http://[all ip addresses on your system]:8888/?token=112bb073331f1460b73768c76dffb2f87ac1d4ca7870d46a
+[I 15:33:01.157 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 15:33:01.160 NotebookApp]
+
+    Copy/paste this URL into your browser when you connect for the first time,
+    to login with a token:
+        http://localhost:8888/?token=112bb073331f1460b73768c76dffb2f87ac1d4ca7870d46a
+        
+3.2) Pressing Ctrl-C shuts down the notebook server but leaves the container intact on disk for later restart or permanent deletion using commands like the following:
+
+    # list containers
+    docker ps -a
+    CONTAINER ID        IMAGE                   COMMAND                  CREATED    STATUS                      PORTS               NAMES
+    d67fe77f1a84        jupyter/base-notebook   "tini -- start-noteb…"   44 seconds ago    Exited (0) 39 seconds ago                       cocky_mirzakhani
+
+    # start the stopped container
+    docker start -a d67fe77f1a84
+    Executing the command: jupyter notebook
+    [W 16:45:02.020 NotebookApp] WARNING: The notebook server is listening on all IP addresses and not using encryption. This is not recommended.
+    ...
+
+    # remove the stopped container
+    docker rm d67fe77f1a84
+    d67fe77f1a84
