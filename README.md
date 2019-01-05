@@ -68,6 +68,8 @@ Now that you're logged in you can download and install Docker on your instance a
 
 ## Install Docker on the instance
 
+More details here: https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce-1 
+
 ### 1) Set Up the repository
 
 1.1) Update the apt package index:
@@ -117,6 +119,8 @@ Now that you're logged in you can download and install Docker on your instance a
       $ sudo docker container run hello-world
 
 ### 3) Import a container "containing" MiniConda and essential ML libraries
+
+More details here: https://jupyter-docker-stacks.readthedocs.io/en/latest/using/running.html 
 
 3.1) This command pulls the jupyter/scipy-notebook image tagged 2c80cf3537ca from Docker Hub 
 
